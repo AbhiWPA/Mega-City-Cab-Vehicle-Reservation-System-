@@ -1,6 +1,7 @@
 package lk.mcc.megacitycab.config;
 
 import lk.mcc.megacitycab.filter.JwtAuthenticationFilter;
+import lk.mcc.megacitycab.util.num.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -54,9 +55,9 @@ public class SecurityConfig {
                 }))
                 .authorizeHttpRequests(req ->
                         req.requestMatchers(WHITE_LIST_URL).permitAll()
-//                                .requestMatchers(HttpMethod.POST, "/api/v1/user/**").hasAnyAuthority("ADMIN","USER")
-//                                .anyRequest()
-//                                .authenticated()
+                                .requestMatchers(HttpMethod.POST, "/api/v1/user/signUp").hasAnyAuthority(Role.USER.name(), Role.ADMIN.name() )
+                                .anyRequest()
+                                .authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider)

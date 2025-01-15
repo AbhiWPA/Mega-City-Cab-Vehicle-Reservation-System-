@@ -3,6 +3,7 @@ package lk.mcc.megacitycab.bean.request;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import lk.mcc.megacitycab.util.num.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,5 +36,5 @@ public class SignUpRequestBean {
 
     @NotBlank(message = "Merchant User Role should not be blank or null")
     @NotEmpty(message = "Merchant User Role is required")
-    private String role;
+    private Role role;
 }

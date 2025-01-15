@@ -1,8 +1,8 @@
 package lk.mcc.megacitycab.bean;
 
-import java.io.Serializable;
+import org.springframework.http.ResponseEntity;
 
-import static lk.mcc.megacitycab.util.AppConstant.*;
+import java.io.Serializable;
 
 /**
  * Title: orange-backend
@@ -12,20 +12,31 @@ import static lk.mcc.megacitycab.util.AppConstant.*;
  * Company: Epic Lanka (Pvt) Ltd.
  * Java Version: 17
  */
-public record ResponseBean(String status, String message, Object content) implements Serializable {
+public record ResponseBean<T>(String code, String message, T content) implements Serializable {
+
     public static ResponseBean createWithOutContent(String status, String message) {
         return new ResponseBean(status, message, null);
     }
 
-    public static ResponseBean success(Object content) {
-        return new ResponseBean(SUCCESS, "Success", content);
+    public static <T> ResponseEntity<ResponseBean<T>> success(String message, T content) {
+        ResponseBean<T> responseBean = new ResponseBean<>("00", message, content);
+        return ResponseEntity.ok(responseBean);
     }
 
-    public static ResponseBean notfound(String message) {
-        return new ResponseBean(NOT_FOUND, message, null);
+    public static <T> ResponseEntity<ResponseBean<T>> success(T content) {
+        ResponseBean<T> responseBean = new ResponseBean<>("00", "Success", content);
+        return ResponseEntity.ok(responseBean);
+    }
+    public static <T> ResponseEntity<ResponseBean<T>> success() {
+        ResponseBean<T> responseBean = new ResponseBean<>("00", "Success", null);
+        return ResponseEntity.ok(responseBean);
     }
 
-    public static ResponseBean unauthorized(String message) {
-        return new ResponseBean(UNAUTHORIZED, message, null);
+    public static <T> ResponseBean<T> failed(String code, String message) {
+        return new ResponseBean<>(code, message, null);
+    }
+
+    public static <T> ResponseBean<T> unauthorized(String code, String message) {
+        return new ResponseBean<>(code, message, null);
     }
 }

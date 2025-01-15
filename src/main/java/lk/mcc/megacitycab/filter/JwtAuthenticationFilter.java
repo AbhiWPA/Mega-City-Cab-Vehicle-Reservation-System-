@@ -4,8 +4,10 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lk.mcc.megacitycab.audit.HeaderHolder;
 import lk.mcc.megacitycab.persistence.repo.UserRepo;
 import lk.mcc.megacitycab.service.JwtService;
+import lk.mcc.megacitycab.util.num.Role;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,6 +27,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserRepo userRepo;
 
+    private final HeaderHolder headerHolder;
+
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
 
@@ -38,6 +42,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
+
         jwt = authHeader.substring(7);
         userName = jwtService.extractUsername(jwt);
         userId = jwtService.extractUserId(jwt);
@@ -49,6 +54,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 //            var token = userRepo.findByToken(jwt).orElse(null);
 
             if (jwtService.isTokenValid(jwt, userDetails, userId)) {
+                Role userRole = jwtService.extractRole(jwt);
+                if (userRole == null) {
+
+                    userRole = userDetails.getAuthorities().stream()
+                            .map(authority -> Role.valueOf(authority.getAuthority()))
+                            .findFirst()
+                            .orElse(null);
+                }
+                headerHolder.setRole(userRole);
 
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

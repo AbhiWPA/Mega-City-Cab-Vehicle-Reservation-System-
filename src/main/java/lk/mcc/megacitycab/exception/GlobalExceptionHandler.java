@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import java.util.HashMap;
 import java.util.Map;
 
-import static lk.mcc.megacitycab.util.AppConstant.NOT_FOUND;
+import static lk.mcc.megacitycab.util.constatnt.AppConstant.NOT_FOUND;
 
 
 /**
@@ -47,7 +47,7 @@ public class GlobalExceptionHandler {
             errors.put(fieldName, errorMessage);
         });
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBean("06", "Validation Failed", errors));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBean("06", "Validation Failed", null));
     }
 
     @ExceptionHandler(NoDataFoundException.class)

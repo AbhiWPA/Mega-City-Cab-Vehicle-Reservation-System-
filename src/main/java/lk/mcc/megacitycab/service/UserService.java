@@ -1,6 +1,10 @@
 package lk.mcc.megacitycab.service;
 
+import lk.mcc.megacitycab.bean.ResponseBean;
+import lk.mcc.megacitycab.bean.request.LoginRequestBean;
 import lk.mcc.megacitycab.bean.request.SignUpRequestBean;
+import lk.mcc.megacitycab.bean.respnse.LoginResponseBean;
+import org.springframework.http.ResponseEntity;
 
 /**
  * Title: Mega-City-Cab
@@ -12,4 +16,8 @@ import lk.mcc.megacitycab.bean.request.SignUpRequestBean;
  */
 public interface UserService {
     void userSignUp(SignUpRequestBean signUpRequestBean);
+
+    ResponseEntity<ResponseBean<LoginResponseBean>> authenticatUser(LoginRequestBean loginRequestBean);
+
+    String LoggedInUser();
 }

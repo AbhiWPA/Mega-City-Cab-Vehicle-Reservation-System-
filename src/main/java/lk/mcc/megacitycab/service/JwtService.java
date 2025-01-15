@@ -1,6 +1,7 @@
 package lk.mcc.megacitycab.service;
 
 import io.jsonwebtoken.Claims;
+import lk.mcc.megacitycab.util.num.Role;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.security.Key;
@@ -19,10 +20,11 @@ public interface JwtService {
     Key getSignInKey();
     <T> T extractClaim(String jwtToken, Function<Claims, T> claimsResolver);
     String extractUsername(String jwtToken);
-    String generateJwtAccessToken(String username, String userId, String department);
+    String generateJwtAccessToken(String username,  String role);
     String generateJwtAccessToken(Map<String, Object> extraClaims, String username);
     boolean isTokenValid(String token, UserDetails userDetails, String userId);
     boolean isTokenExpired(String token);
     Date extractExpiration(String token);
     String extractUserId(String token);
+    Role extractRole(String token);
 }

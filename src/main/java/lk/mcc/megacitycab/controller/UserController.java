@@ -1,11 +1,12 @@
 package lk.mcc.megacitycab.controller;
 
 import lk.mcc.megacitycab.bean.ResponseBean;
+import lk.mcc.megacitycab.bean.request.LoginRequestBean;
 import lk.mcc.megacitycab.bean.request.SignUpRequestBean;
+import lk.mcc.megacitycab.bean.respnse.LoginResponseBean;
 import lk.mcc.megacitycab.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.connector.Response;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,9 +31,14 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping(value = "/signUp",consumes = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<ResponseBean> userSignUp(@RequestBody SignUpRequestBean signUpRequestBean) {
+    ResponseEntity<ResponseBean<String>> userSignUp(@RequestBody SignUpRequestBean signUpRequestBean) {
         userService.userSignUp(signUpRequestBean);
-        return ResponseEntity.ok(ResponseBean.success("User Sign Up Successful"));
+        return ResponseEntity.ok(ResponseBean.success("User Sign Up Successful").getBody());
+    }
+
+    @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
+    ResponseEntity<ResponseBean<LoginResponseBean>> userLogin(@RequestBody LoginRequestBean loginRequestBean) {
+         return userService.authenticatUser(loginRequestBean);
     }
 
 }

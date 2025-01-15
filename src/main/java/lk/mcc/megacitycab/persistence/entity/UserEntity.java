@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -43,6 +44,12 @@ public class UserEntity extends BaseEntity implements UserDetails {
 
     @Column(name = "role")
     private String role;
+
+    @Column(name = "portal_token")
+    private String portalToken;
+
+    @Column(name = "last_login_date")
+    private LocalDateTime lastLoginDate;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
